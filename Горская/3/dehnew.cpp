@@ -1,64 +1,96 @@
-#include <iostream>
-#include <cmath>
-#include <windows.h>  // Для SetConsoleOutputCP
-#include <clocale>    // Для setlocale
+#include <iostream>   // Для вывода информации в консоль
+#include <cmath>      // Для математических функций (exp)
+#include <windows.h>  // Для SetConsoleOutputCP (установка UTF-8 в Windows)
+#include <clocale>    // Для setlocale (поддержка кириллицы)
 
-
+// Целевая функция: f(x) = e^x + e^{-3x} - 4
 double f(double x) {
     return std::exp(x) + std::exp(-3 * x) - 4;
 }
 
+// Производная функции для метода Ньютона: f'(x) = e^x - 3e^{-3x}
 double df(double x) {
     return std::exp(x) - 3 * std::exp(-3 * x);
 }
 
+//  Метод дихотомии (бисекции)
 void dichotomy(double a, double b, double eps) {
+    // Вычисляем значения функции на границах
     double fa = f(a);
     double fb = f(b);
+
+    // Проверяем наличие корня на отрезке [a, b]
     if (fa * fb >= 0) {
         std::cout << "На интервале [" << a << ", " << b << "] нет корня или их несколько." << std::endl;
         return;
     }
-    int iter = 0;
+
+    int iter = 0; // Счётчик итераций
+
+    // Основной цикл: пока длина интервала больше точности
     while (b - a > eps) {
-        double c = (a + b) / 2;
-        double fc = f(c);
+        double c = (a + b) / 2;     // Середина текущего интервала
+        double fc = f(c);           // Значение функции в середине
+
+        // Если нашли точный корень или достигнута нужная точность — выходим
         if (fc == 0 || b - a < eps) break;
+
+        // Выбираем ту половину, где функция меняет знак
         if (fa * fc < 0) {
-            b = c;
+            b = c;  // Корень слева от середины
             fb = fc;
         } else {
-            a = c;
+            a = c;  // Корень справа от середины
             fa = fc;
         }
         iter++;
     }
+
+    // Выводим результат
     std::cout << "Метод дихотомии: корень ≈ " << (a + b) / 2 << ", итераций: " << iter << std::endl;
 }
 
+//  Метод Ньютона (касательных)
 void newton(double x0, double eps) {
-    int iter = 0;
-    double x = x0;
-    double fx = f(x);
-    double dfx = df(x);
+    int iter = 0;               // Счётчик итераций
+    double x = x0;              // Текущее приближение
+    double fx = f(x);           // Значение функции в начальной точке
+    double dfx = df(x);         // Значение производной
+
+    // Основной цикл: пока не достигнута нужная точность или не превышено число итераций
     while (std::abs(fx) > eps && iter < 1000) {
-        double dx = fx / dfx;
-        x -= dx;
-        fx = f(x);
-        dfx = df(x);
+        double dx = fx / dfx;   // Шаг метода Ньютона
+        x -= dx;                // Обновляем приближение
+        fx = f(x);              // Пересчитываем значение функции
+        dfx = df(x);            // И производной
         iter++;
     }
+
+    // Выводим результат
     std::cout << "Метод Ньютона: корень ≈ " << x << ", итераций: " << iter << std::endl;
 }
 
+// Основная программа
 int main() {
+    // Устанавливаем кодировку UTF-8 для корректного вывода в консоль Windows
     SetConsoleOutputCP(CP_UTF8);
-    // Активация локали для корректного отображения кириллицы
+
+    // Активируем русскую локаль для поддержки кириллицы в выводе
     setlocale(LC_ALL, "ru_RU.UTF-8");
+
+    // Интервал поиска корня для метода дихотомии
     double a = 1.0;
     double b = 2.0;
+
+    // Точность
     double eps = 1e-6;
-    dichotomy(a, b, eps);
-    newton(1.5, eps);
+
+    // Начальное приближение для метода Ньютона
+    double x0 = 1.5;
+
+    // Вызываем оба метода
+    dichotomy(a, b, eps);       // Поиск корня методом дихотомии
+    newton(x0, eps);            // Поиск корня методом Ньютона
+
     return 0;
 }
