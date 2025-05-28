@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <windows.h>  // Для SetConsoleOutputCP
 #include <clocale> 
 using namespace std;
 
@@ -38,7 +37,6 @@ int maximizeLoot(int maxCapacity, const vector<int>& itemWeights, const vector<i
 }
 
 int main() {
-    SetConsoleOutputCP(65001);
     setlocale(LC_ALL, "ru");
 
     int itemCount, maxCapacity;
