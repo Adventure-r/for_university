@@ -5,6 +5,11 @@
 #include <cmath>
 #include <iomanip>
 
+/*
+ *	Кубический сплайн лучше обычного так как учитывается и вторая производная функции, для подбора значений
+ *
+ * */
+
 // Структура для коэффициентов сплайнов
 struct Spline {
     double a, b, c, d, x;
@@ -92,7 +97,7 @@ double interpolate(const std::vector<Spline>& splines, double x_value) {
 int main() {
     setlocale(LC_ALL, "ru");
     // Данные
-    std::vector<double> x = { 1.05, 1.09, 1.13, 1.15, 1.17, 1.20 };
+    std::vector<double> x = {1.00, 1.04, 1.08, 1.12, 1.16, 1.2} ;
     std::vector<double> y;
     for (double xi : x) {
         y.push_back(ch(xi)); // Вычисляем значения ch(x)
@@ -102,7 +107,7 @@ int main() {
     std::vector<Spline> splines = buildCubicSpline(x, y);
 
     // Точки для интерполяции
-    std::vector<double> points = { 1.05, 1.09, 1.13, 1.15, 1.17 };
+    std::vector<double> points = {  1.05, 1.09, 1.13, 1.15, 1.17, 1.20 };
     std::cout << std::fixed << std::setprecision(6);
 
     std::cout << "Интерполированные значения:\n";

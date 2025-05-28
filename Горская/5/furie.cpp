@@ -49,7 +49,7 @@ int main() {
     setlocale(LC_ALL, "ru");
 
     auto func = [](double x) {
-        return exp(x);
+        return x;
         };
 
     double period = 2 * M_PI; // Период функции
