@@ -1,4 +1,4 @@
-// Быстрое преобразование Фурье с построением спектра (GNUPlot)
+// бЫстрое преобразование Фурье с построением спектра (GNUPlot)
 #include <iostream>
 #include <vector>
 #include <complex>
